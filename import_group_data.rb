@@ -109,7 +109,7 @@ feed["data"].each { |post|
 	puts JSON.generate(es_entry(post["id"],"post"))
 	puts JSON.generate(post) 
 	puts comments_json.join("\n").strip
-	sleep(2)
+	sleep(1)
 
 
 }
