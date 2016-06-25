@@ -1,11 +1,38 @@
+#!/usr/bin/env ruby
 require 'net/http'
 require 'json'
 require 'date'
 
-require './'+ARGV[0]+"_conf"
+if ARGV.length == 2 then
+	index_name = ARGV[0]
+	Config[:access_token] = ARGV[1]
+else 
+	puts """
+
+This tool is used to generate statistics from a facebook group, which then can be importing into elasticsearch and analyzed with tools such as Kibana.
+
+In order for it to work, you must execute it the following:
+
+import_group_data.rb <config> <access_token>
+
+config : The name of the configuration file, based on config_template.rb. We will automaticlly add '_conf.rb' suffix, for example 'june1_conf.rb'
+access_token : A valid access token, with the user_managed_groups permission.
+
+You may generate it from here:
+
+https://developers.facebook.com/tools/explorer/
 
 
-Config[:access_token] = ARGV[1]
+
+
+"""
+
+
+end
+
+require './'+index_name+"_conf"
+
+
 
 
 
