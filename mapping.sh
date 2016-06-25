@@ -1,3 +1,4 @@
+#!/bin/sh
 curl -XDELETE http://localhost:9200/etgar-$1 
 curl -XPUT http://localhost:9200/etgar-$1 -d '
 {
