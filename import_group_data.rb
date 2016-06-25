@@ -76,8 +76,11 @@ feed["data"].each { |post|
 			post['time_to_reply'] = (DateTime.parse(comment['created_time']).to_time.to_i - DateTime.parse(post['created_time']).to_time.to_i)/60.0
 		end
 		
-		#subcomments = JSON.parse(Net::HTTP.get(comments_url(comment["id"])))
-		subcomments = { "data" => [] }
+		subcomments = 	if comment["comment_count"] > 0 then 
+					JSON.parse(Net::HTTP.get(comments_url(comment["id"])))
+				else				
+					subcomments = { "data" => [] }
+				end
 #		
 		subcomments_json = subcomments["data"].map { |subcomment|
 			subcomment["is_member"] = true
