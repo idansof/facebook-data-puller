@@ -5,9 +5,10 @@ require 'date'
 
 if ARGV.length == 2 then
 	index_name = ARGV[0]
-	Config[:access_token] = ARGV[1]
+	access_token = ARGV[1]
 else 
 	puts """
+end
 
 This tool is used to generate statistics from a facebook group, which then can be importing into elasticsearch and analyzed with tools such as Kibana.
 
@@ -31,6 +32,7 @@ https://developers.facebook.com/tools/explorer/
 end
 
 require './'+index_name+"_conf"
+Config[:access_token] = access_token
 
 
 
