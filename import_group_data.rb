@@ -36,6 +36,9 @@ Config[:access_token] = access_token
 
 
 
+def members_url 
+	URI("https://graph.facebook.com/v2.6/#{Config[:group_id]}/members?access_token=#{Config[:access_token]}&limit=10000")
+end
 
 
 def reactions_url(post_id) 
@@ -58,7 +61,22 @@ end
 feed_url =  URI("https://graph.facebook.com/v2.6/#{Config[:group_id]}/feed?access_token=#{Config[:access_token]}&fields=from,created_time,link,message,type&format=json&limit=1000&since=#{Config[:since]}")
 types = [:manager,:dietian,:personal_mentor,:mentor,:admin,:merim]
 
+
+members = JSON.parse(Net::HTTP.get(members_url))
+members_map = Hash.new
+members["data"].each { |member|
+  members_map[member["name"]] = member["id"]
+}
+
 types.each {|type|
+	Config[type].map! { |person|
+	    if members_map[person].nil?
+	      STDERR.puts "Unknown person "+person
+	      person
+	    else
+	      members_map[person]
+	    end
+	}
 	Config[type].each { |person|
 		puts JSON.generate(es_entry(person,type.to_s))
 		puts JSON.generate({ :id => person})
